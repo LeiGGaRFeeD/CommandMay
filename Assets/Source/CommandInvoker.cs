@@ -1,34 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
-
-
-
 
 public class CommandInvoker
 {
-    private const int N = 10; // Ограничение очереди команд
-    private Queue<ICommand> commandQueue = new Queue<ICommand>();
+    private Queue<ICommand> rightClickCommandsQueue = new Queue<ICommand>();
+    private Stack<ICommand> executedCommandsStack = new Stack<ICommand>();
 
-    public void InvokeCommand(ICommand command, Vector2 position)
+    public void AddRightClickCommand(ICommand command)
     {
-        if (commandQueue.Count >= N)
-        {
-            commandQueue.Dequeue(); // Удалите самую старую команду, если очередь полна
-        }
-
-        command.Invoke(position);
-        commandQueue.Enqueue(command); // Добавьте новую команду в очередь
+        rightClickCommandsQueue.Enqueue(command);
     }
 
-    public void Undo()
+    public void ExecuteRightClickCommands()
     {
-        if (commandQueue.Count > 0)
+        while (rightClickCommandsQueue.Count > 0)
         {
-            ICommand command = commandQueue.Dequeue();
-            command.Undo(); // Отмените последнюю команду
+            ICommand command = rightClickCommandsQueue.Dequeue();
+            command.Invoke();
+            executedCommandsStack.Push(command);
+        }
+    }
+
+    public void UndoRightClickCommand()
+    {
+        if (executedCommandsStack.Count > 0)
+        {
+            ICommand command = executedCommandsStack.Pop();
+            command.Undo();
         }
     }
 }
-
-

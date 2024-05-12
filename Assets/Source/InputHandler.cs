@@ -14,20 +14,18 @@ public class InputHandler : MonoBehaviour
         if (Input.GetMouseButtonDown(1)) // ПКМ
         {
             Vector2 spawnPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            ICommand spawnCommand = new SpawnPrefabCommand(prefab);
-            invoker.InvokeCommand(spawnCommand, spawnPosition);
+            ICommand spawnCommand = new SpawnPrefabCommand(prefab, spawnPosition);
+            invoker.AddRightClickCommand(spawnCommand);
         }
 
-        if (Input.GetMouseButtonDown(0)) // ЛКМ
+        if (Input.GetKeyDown(KeyCode.Return)) // Enter
         {
-            Vector2 movePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            ICommand moveCommand = new MoveCharacterCommand(character);
-            invoker.InvokeCommand(moveCommand, movePosition);
+            invoker.ExecuteRightClickCommands();
         }
-        if (Input.GetMouseButtonDown(2)) // Колесо мыши
+
+        if (Input.GetMouseButtonDown(2)) // Колесо мыши (здесь для примера, может быть изменено)
         {
-            invoker.Undo();
+            invoker.UndoRightClickCommand();
         }
     }
-
 }

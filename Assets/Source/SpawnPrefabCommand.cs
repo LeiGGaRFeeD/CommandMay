@@ -5,23 +5,25 @@ using UnityEngine;
 public class SpawnPrefabCommand : ICommand
 {
     private GameObject prefab;
-    private GameObject lastSpawnedObject;
+    private GameObject spawnedObject;
+    private Vector2 position;
 
-    public SpawnPrefabCommand(GameObject prefab)
+    public SpawnPrefabCommand(GameObject prefab, Vector2 position)
     {
         this.prefab = prefab;
+        this.position = position;
     }
 
-    public void Invoke(Vector2 position)
+    public void Invoke()
     {
-        lastSpawnedObject = Object.Instantiate(prefab, position, Quaternion.identity);
+        spawnedObject = Object.Instantiate(prefab, position, Quaternion.identity);
     }
 
     public void Undo()
     {
-        if (lastSpawnedObject != null)
+        if (spawnedObject != null)
         {
-            Object.Destroy(lastSpawnedObject);
+            Object.Destroy(spawnedObject);
         }
     }
 }
