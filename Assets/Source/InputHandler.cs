@@ -24,5 +24,10 @@ public class InputHandler : MonoBehaviour
             ICommand moveCommand = new MoveCharacterCommand(character);
             invoker.InvokeCommand(moveCommand, movePosition);
         }
+        if (Input.GetMouseButtonDown(2)) // Колесо мыши
+        {
+            invoker.Undo();
+        }
     }
+
 }

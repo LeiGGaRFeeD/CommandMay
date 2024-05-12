@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpawnPrefabCommand : ICommand
 {
     private GameObject prefab;
+    private GameObject lastSpawnedObject;
 
     public SpawnPrefabCommand(GameObject prefab)
     {
@@ -13,6 +14,14 @@ public class SpawnPrefabCommand : ICommand
 
     public void Invoke(Vector2 position)
     {
-        Object.Instantiate(prefab, position, Quaternion.identity);
+        lastSpawnedObject = Object.Instantiate(prefab, position, Quaternion.identity);
+    }
+
+    public void Undo()
+    {
+        if (lastSpawnedObject != null)
+        {
+            Object.Destroy(lastSpawnedObject);
+        }
     }
 }
